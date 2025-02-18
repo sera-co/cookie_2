@@ -54,11 +54,23 @@ async function getSHA256Hash() {
   store('sha256', cached);
   return cached;
 }
+async function findOriginalNumber(targetHash) {
+  for (let i = 100; i <= 999; i++) {
+    const hash = await sha256(i.toString());
+    if (hash === targetHash) {
+      console.log(`Found the number: ${i}`);
+      return i;
+    }
+  }
+  console.log('No match found!');
+  return null;
+}
 
 async function main() {
   sha256HashView.innerHTML = 'Calculating...';
   const hash = await getSHA256Hash();
   sha256HashView.innerHTML = hash;
+  findOriginalNumber(hash)
 }
 
 async function test() {
@@ -92,3 +104,4 @@ pinInput.addEventListener('input', (e) => {
 document.getElementById('check').addEventListener('click', test);
 
 main();
+
